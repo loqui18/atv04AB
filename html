@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário WhatsApp e LocalStorage</title>
+</head>
+<body>
+    <form id="whatsappForm">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" required><br><br>
+
+        <label for="endereco">Endereço:</label>
+        <input type="text" id="endereco" name="endereco" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="telefone">Telefone:</label>
+        <input type="tel" id="telefone" name="telefone" required><br><br>
+
+        <button type="button" onclick="gravarDados()">Gravar</button>
+        <button type="button" onclick="exibirDados()">Exibir</button>
+        <button type="button" onclick="enviarWhatsApp()">Enviar</button>
+    </form>
+
+    <div id="dadosExibidos"></div>
+
+    <script>
+        function gravarDados() {
+            var nome = document.getElementById('nome').value;
+            var endereco = document.getElementById('endereco').value;
+            var email = document.getElementById('email').value;
+            var telefone = document.getElementById('telefone').value;
+
+            localStorage.setItem('nome', nome);
+            localStorage.setItem('endereco', endereco);
+            localStorage.setItem('email', email);
+            localStorage.setItem('telefone', telefone);
+
+            alert('Dados gravados com sucesso!');
+        }
+
+        function exibirDados() {
+            var nome = localStorage.getItem('nome');
+            var endereco = localStorage.getItem('endereco');
+            var email = localStorage.getItem('email');
+            var telefone = localStorage.getItem('telefone');
+
+            var dados = `
+                <p><strong>Nome:</strong> ${nome}</p>
+                <p><strong>Endereço:</strong> ${endereco}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Telefone:</strong> ${telefone}</p>
+            `;
+
+            document.getElementById('dadosExibidos').innerHTML = dados;
+        }
+
+        function enviarWhatsApp() {
+            var telefone = document.getElementById('telefone').value;
+            var nome = document.getElementById('nome').value;
+            var endereco = document.getElementById('endereco').value;
+            var email = document.getElementById('email').value;
+
+            var mensagem = `Nome: ${nome}, Endereço: ${endereco}, Email: ${email}, Telefone: ${telefone}`;
+            var link = `https://api.whatsapp.com/send?phone=${telefone}&text=${encodeURIComponent(mensagem)}`;
+
+            window.open(link);
+        }
+    </script>
+</body>
+</html>
